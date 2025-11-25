@@ -209,6 +209,7 @@ class KnowledgeFile:
                 self.docs = loader.load()
             else:
                 self.docs = loader.load()
+
         return self.docs
 
     def docs2texts(

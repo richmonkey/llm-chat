@@ -5,6 +5,7 @@ import numpy as np
 import tqdm
 from langchain_community.document_loaders.unstructured import UnstructuredFileLoader
 from PIL import Image
+#import pymupdf as fitz
 import fitz  # pyMuPDF里面的fitz包，不要与pip install fitz混淆
 import numpy as np
 from unstructured.partition.text import partition_text
@@ -40,8 +41,6 @@ class RapidOCRPDFLoader(UnstructuredFileLoader):
             return rotated_img
 
         def pdf2text(filepath):
-
-
             ocr = get_ocr()
             doc = fitz.open(filepath)
             resp = ""
@@ -53,8 +52,9 @@ class RapidOCRPDFLoader(UnstructuredFileLoader):
                 b_unit.set_description(
                     "RapidOCRPDFLoader context page index: {}".format(i)
                 )
+                
                 b_unit.refresh()
-                text = page.get_text("")
+                text = page.get_text()
                 resp += text + "\n"
 
                 img_list = page.get_image_info(xrefs=True)
@@ -96,6 +96,6 @@ class RapidOCRPDFLoader(UnstructuredFileLoader):
 
 
 if __name__ == "__main__":
-    loader = RapidOCRPDFLoader(file_path="/Users/tonysong/Desktop/test.pdf")
+    loader = RapidOCRPDFLoader(file_path="/Users/houxh/workspace/llm_chat/documents/content/test.pdf")
     docs = loader.load()
     print(docs)
