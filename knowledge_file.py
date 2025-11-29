@@ -11,6 +11,7 @@ import langchain_community.document_loaders
 from langchain.docstore.document import Document
 from langchain.text_splitter import MarkdownHeaderTextSplitter, TextSplitter
 from langchain_community.document_loaders import JSONLoader, TextLoader
+from document_loaders import RapidOCRDocLoader
 from text_splitter import zh_title_enhance as func_zh_title_enhance
 logger = logging
 
@@ -139,11 +140,13 @@ def get_loader(loader_name: str, file_path: str, loader_kwargs: Dict = None):
             document_loaders_module = importlib.import_module(
                 "document_loaders"
             )
+            DocumentLoader = getattr(document_loaders_module, loader_name)
         else:
             document_loaders_module = importlib.import_module(
                 "langchain_community.document_loaders"
             )
-        DocumentLoader = getattr(document_loaders_module, loader_name)
+            DocumentLoader = getattr(document_loaders_module, loader_name)
+
     except Exception as e:
         msg = f"为文件{file_path}查找加载器{loader_name}时出错：{e}"
         logger.error(f"{e.__class__.__name__}: {msg}")
@@ -169,7 +172,7 @@ def get_loader(loader_name: str, file_path: str, loader_kwargs: Dict = None):
     elif loader_name == "JSONLinesLoader":
         loader_kwargs.setdefault("jq_schema", ".")
         loader_kwargs.setdefault("text_content", False)
-
+    print("document loader:", DocumentLoader)
     loader = DocumentLoader(file_path, **loader_kwargs)
     return loader
 

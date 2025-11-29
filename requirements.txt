@@ -4,3 +4,4 @@ langchain-community
 unstructured
 modelscope[framework]
 httpx[socks]
+pyMuPDF

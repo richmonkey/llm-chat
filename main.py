@@ -30,6 +30,7 @@ class FaissSearch:
         embeddings = embedding.embed_documents(texts=texts)
         print("doc embedings:", embeddings)
         print("metadatas:", metadatas)
+        print("texts:", texts)
         self.flat_index.add(embeddings)    
         self.documents.extend(txtdocs)        
 
@@ -65,6 +66,7 @@ if __name__ == "__main__":
     flat_index.add_file("test.pdf", flat_index)
     flat_index.add_file("test.html", flat_index)
     flat_index.add_file("test.txt", flat_index)    
+    flat_index.add_file("test.docx", flat_index)
 
     q = "Faiss时踩过的坑"
     res = flat_index.search(q)

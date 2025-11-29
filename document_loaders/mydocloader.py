@@ -2,6 +2,7 @@ from typing import List
 import tqdm
 from langchain_community.document_loaders.unstructured import UnstructuredFileLoader
 import numpy as np
+import docx
 from docx import Document, ImagePart
 from docx.oxml.table import CT_Tbl
 from docx.oxml.text.paragraph import CT_P
@@ -10,17 +11,17 @@ from docx.text.paragraph import Paragraph
 from PIL import Image
 from rapidocr_onnxruntime import RapidOCR
 from io import BytesIO
-from docx.document import Document
+
 
 class RapidOCRDocLoader(UnstructuredFileLoader):
     def _get_elements(self) -> List:
         def doc2text(filepath):
             ocr = RapidOCR()
-            doc = Document(filepath)
+            doc = docx.Document(filepath)
             resp = ""
 
             def iter_block_items(parent):
-                if isinstance(parent, Document):
+                if isinstance(parent, docx.document.Document):
                     parent_elm = parent.element.body
                 elif isinstance(parent, _Cell):
                     parent_elm = parent._tc
